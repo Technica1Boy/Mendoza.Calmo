@@ -1,0 +1,941 @@
+/* ============================================================
+   SAFgt - Sistema de Facturación
+   Estilos profesionales · Minimalistas · Azul Marino + Verde
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+:root {
+    --navy: #0d1b2a;
+    --navy-mid: #1a3a5c;
+    --navy-light: #2a4a6c;
+    --green: #1b5e20;
+    --green-mid: #2e7d32;
+    --green-light: #e8f5e9;
+    --orange: #e65100;
+    --red: #c62828;
+    --gray-50: #f8fafc;
+    --gray-100: #f1f5f9;
+    --gray-200: #e2e8f0;
+    --gray-400: #94a3b8;
+    --gray-600: #475569;
+    --gray-800: #1e293b;
+    --white: #ffffff;
+    --shadow: 0 4px 24px rgba(13, 27, 42, 0.12);
+    --radius: 12px;
+    --radius-sm: 8px;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    background: linear-gradient(145deg, #0d1b2a 0%, #1a3a5c 50%, #0d2b4a 100%);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 24px 16px;
+    color: var(--gray-800);
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+/* ========== CONTENEDOR PRINCIPAL ========== */
+.container {
+    background: var(--white);
+    border-radius: 20px;
+    padding: 28px 32px;
+    max-width: 980px;
+    width: 100%;
+    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.45);
+    position: relative;
+}
+
+/* ========== LOGO Y TÍTULO ========== */
+.logo-titulo {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.logo-titulo img {
+    width: 90px;
+    height: 90px;
+    object-fit: contain;
+    margin-bottom: 8px;
+}
+
+.logo-titulo h1 {
+    font-size: 1.45rem;
+    font-weight: 800;
+    color: var(--navy);
+    letter-spacing: -0.3px;
+}
+
+.logo-titulo .subtitulo {
+    display: inline-block;
+    margin-top: 4px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--green-mid);
+    background: var(--green-light);
+    padding: 3px 14px;
+    border-radius: 20px;
+}
+
+/* ========== BOTÓN SUPERUSER (esquina) ========== */
+.btn-superuser {
+    position: absolute;
+    top: 14px;
+    right: 16px;
+    background: transparent;
+    border: 1px solid var(--gray-200);
+    color: var(--gray-400);
+    font-size: 0.7rem;
+    font-weight: 600;
+    padding: 4px 10px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s;
+    z-index: 20;
+}
+
+.btn-superuser:hover {
+    background: var(--navy);
+    color: white;
+    border-color: var(--navy);
+}
+
+/* ========== MENÚ PRINCIPAL ========== */
+.menu-principal {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    max-width: 340px;
+    margin: 12px auto 0;
+}
+
+.btn-menu {
+    padding: 14px 20px;
+    border: none;
+    border-radius: var(--radius);
+    font-size: 0.95rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    font-family: inherit;
+}
+
+.btn-usuario {
+    background: linear-gradient(135deg, var(--navy-mid), var(--navy));
+    color: white;
+    box-shadow: 0 6px 20px rgba(26, 58, 92, 0.35);
+}
+
+.btn-usuario:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 28px rgba(26, 58, 92, 0.5);
+}
+
+.btn-auditor {
+    background: linear-gradient(135deg, var(--green-mid), var(--green));
+    color: white;
+    box-shadow: 0 6px 20px rgba(46, 125, 50, 0.35);
+}
+
+.btn-auditor:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 28px rgba(46, 125, 50, 0.5);
+}
+
+/* ========== FORMULARIOS Y PANELES ========== */
+.formulario,
+.panel {
+    display: none;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.formulario.activo,
+.panel.activo {
+    display: flex;
+}
+
+.formulario-login {
+    max-width: 380px;
+    margin: 0 auto;
+    width: 100%;
+}
+
+.panel h2,
+.formulario h2 {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--navy);
+    text-align: center;
+}
+
+.descripcion {
+    text-align: center;
+    color: var(--gray-600);
+    font-size: 0.85rem;
+}
+
+/* ========== FORM GROUPS ========== */
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.form-group label {
+    font-weight: 600;
+    color: var(--navy);
+    font-size: 0.82rem;
+}
+
+.form-group input,
+.form-group select {
+    padding: 10px 14px;
+    border: 1.5px solid var(--gray-200);
+    border-radius: var(--radius-sm);
+    font-size: 0.9rem;
+    font-family: inherit;
+    background: var(--gray-50);
+    color: var(--navy);
+    transition: all 0.2s;
+    width: 100%;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+    outline: none;
+    border-color: var(--navy-mid);
+    background: white;
+    box-shadow: 0 0 0 3px rgba(26, 58, 92, 0.1);
+}
+
+.form-group input:disabled,
+.form-group input[readonly] {
+    background: var(--gray-100);
+    cursor: not-allowed;
+    color: var(--gray-600);
+}
+
+.form-group select {
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%231a3a5c' viewBox='0 0 16 16'%3E%3Cpath d='M8 11L3 6h10z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    cursor: pointer;
+}
+
+.form-group small {
+    font-size: 0.7rem;
+    color: var(--gray-400);
+}
+
+/* ========== BOTONES ========== */
+.btn-ingresar,
+.btn-registrar,
+.btn-success,
+.btn-calcular,
+.btn-generar-orden,
+.btn-volver {
+    padding: 11px 18px;
+    border: none;
+    border-radius: var(--radius-sm);
+    font-size: 0.9rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    font-family: inherit;
+    width: 100%;
+}
+
+.btn-ingresar {
+    background: linear-gradient(135deg, var(--navy-mid), var(--navy));
+    color: white;
+    box-shadow: 0 4px 14px rgba(26, 58, 92, 0.3);
+}
+
+.btn-ingresar:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(26, 58, 92, 0.45);
+}
+
+.btn-registrar,
+.btn-success,
+.btn-generar-orden {
+    background: linear-gradient(135deg, var(--green-mid), var(--green));
+    color: white;
+    box-shadow: 0 4px 14px rgba(46, 125, 50, 0.3);
+}
+
+.btn-registrar:hover,
+.btn-success:hover,
+.btn-generar-orden:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(46, 125, 50, 0.45);
+}
+
+.btn-calcular {
+    background: linear-gradient(135deg, #1565c0, #0d47a1);
+    color: white;
+    box-shadow: 0 4px 14px rgba(21, 101, 192, 0.3);
+}
+
+.btn-calcular:hover {
+    transform: translateY(-1px);
+}
+
+.btn-volver {
+    background: linear-gradient(135deg, #f57c00, var(--orange));
+    color: white;
+    box-shadow: 0 4px 14px rgba(245, 124, 0, 0.3);
+}
+
+.btn-volver:hover {
+    transform: translateY(-1px);
+}
+
+.btn-danger {
+    background: linear-gradient(135deg, var(--red), #b71c1c);
+    color: white;
+    padding: 5px 12px;
+    border: none;
+    border-radius: 6px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.btn-danger:hover {
+    transform: scale(1.04);
+}
+
+.btn-sm {
+    padding: 5px 11px;
+    font-size: 0.72rem;
+    width: auto;
+    display: inline-block;
+}
+
+.btn-generar-orden:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+    transform: none;
+}
+
+/* ========== MENÚ SUPERIOR (Usuario) ========== */
+.menu-superior {
+    display: none;
+    background: var(--navy);
+    border-radius: var(--radius);
+    padding: 5px;
+    margin-bottom: 16px;
+    gap: 3px;
+    flex-wrap: wrap;
+}
+
+.menu-superior.activo {
+    display: flex;
+}
+
+.menu-superior .btn-menu-opcion {
+    flex: 1;
+    min-width: 90px;
+    padding: 9px 10px;
+    border: none;
+    border-radius: 7px;
+    font-size: 0.78rem;
+    font-weight: 600;
+    cursor: pointer;
+    background: transparent;
+    color: rgba(255, 255, 255, 0.65);
+    transition: all 0.2s;
+    font-family: inherit;
+    text-align: center;
+}
+
+.menu-superior .btn-menu-opcion:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+}
+
+.menu-superior .btn-menu-opcion.activo {
+    background: white;
+    color: var(--navy);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
+}
+
+.menu-superior .btn-cerrar-sesion {
+    padding: 9px 14px;
+    border: none;
+    border-radius: 7px;
+    font-size: 0.78rem;
+    font-weight: 600;
+    cursor: pointer;
+    background: var(--red);
+    color: white;
+    font-family: inherit;
+}
+
+.menu-superior .btn-cerrar-sesion:hover {
+    background: #b71c1c;
+}
+
+/* ========== CARDS ========== */
+.card-info {
+    background: var(--gray-50);
+    padding: 14px 16px;
+    border-radius: var(--radius);
+    border: 1.5px solid var(--gray-200);
+}
+
+.card-info p {
+    margin: 3px 0;
+    font-size: 0.88rem;
+}
+
+.card-info strong {
+    color: var(--navy);
+}
+
+.card-navy {
+    background: #e8eaf6;
+    border-color: var(--navy-mid);
+}
+
+.card-green {
+    background: var(--green-light);
+    border-color: #a5d6a7;
+}
+
+.card-orange {
+    background: #fff8e1;
+    border-color: #ffcc80;
+}
+
+/* ========== GRID ========== */
+.grid-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+}
+
+.grid-3 {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 12px;
+}
+
+.grid-4 {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    gap: 10px;
+}
+
+/* ========== MENSAJES ========== */
+.mensaje-error,
+.mensaje-exito {
+    font-size: 0.82rem;
+    text-align: center;
+    display: none;
+    padding: 8px 12px;
+    border-radius: var(--radius-sm);
+}
+
+.mensaje-error {
+    color: var(--red);
+    background: #ffebee;
+    border-left: 3px solid var(--red);
+}
+
+.mensaje-exito {
+    color: var(--green);
+    background: var(--green-light);
+    border-left: 3px solid var(--green-mid);
+}
+
+.mensaje-error.mostrar,
+.mensaje-exito.mostrar {
+    display: block;
+}
+
+/* ========== LISTA USUARIOS / ADMIN ========== */
+.usuario-info {
+    background: var(--green-light);
+    padding: 10px 14px;
+    border-radius: var(--radius-sm);
+    text-align: center;
+    font-weight: 600;
+    color: var(--green);
+    font-size: 0.85rem;
+    border: 1px solid #a5d6a7;
+}
+
+.lista-usuarios {
+    max-height: 200px;
+    overflow-y: auto;
+    border: 1.5px solid var(--gray-200);
+    border-radius: var(--radius-sm);
+    background: var(--gray-50);
+}
+
+.item-usuario {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 12px;
+    border-bottom: 1px solid var(--gray-200);
+}
+
+.item-usuario:last-child {
+    border-bottom: none;
+}
+
+.item-usuario .nit {
+    font-weight: 700;
+    color: var(--navy);
+    font-size: 0.82rem;
+}
+
+.item-usuario .nombre {
+    color: var(--green-mid);
+    font-weight: 600;
+    font-size: 0.78rem;
+}
+
+.item-usuario .empresa {
+    color: var(--gray-600);
+    font-size: 0.72rem;
+}
+
+.sin-usuarios {
+    text-align: center;
+    color: var(--gray-400);
+    padding: 16px;
+    font-size: 0.85rem;
+}
+
+/* ========== TABLAS ========== */
+.tabla-container,
+.scroll-container {
+    overflow-x: auto;
+    border-radius: var(--radius-sm);
+    border: 1.5px solid var(--gray-200);
+}
+
+.scroll-container {
+    max-height: 320px;
+    overflow-y: auto;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.8rem;
+}
+
+th {
+    background: var(--navy);
+    color: white;
+    padding: 9px 11px;
+    text-align: left;
+    font-weight: 600;
+    position: sticky;
+    top: 0;
+    z-index: 5;
+}
+
+td {
+    padding: 8px 11px;
+    border-bottom: 1px solid var(--gray-200);
+}
+
+tr:hover {
+    background: var(--gray-50);
+}
+
+tr.anulada {
+    background: #fff5f5;
+    color: var(--gray-400);
+}
+
+tr.anulada td {
+    text-decoration: line-through;
+}
+
+.badge-estado {
+    background: var(--green-light);
+    color: var(--green);
+    padding: 2px 9px;
+    border-radius: 12px;
+    font-size: 0.68rem;
+    font-weight: 600;
+}
+
+.badge-anulada {
+    background: #ffebee;
+    color: var(--red);
+    padding: 2px 9px;
+    border-radius: 12px;
+    font-size: 0.68rem;
+    font-weight: 600;
+}
+
+.badge-lote {
+    background: #e8eaf6;
+    color: var(--navy-mid);
+    padding: 2px 8px;
+    border-radius: 10px;
+    font-size: 0.68rem;
+    font-weight: 600;
+}
+
+/* ========== RESUMEN FACTURA ========== */
+.resumen-factura {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 8px;
+    text-align: center;
+    background: var(--gray-50);
+    padding: 12px;
+    border-radius: var(--radius-sm);
+    border: 1.5px solid var(--gray-200);
+}
+
+.resumen-factura strong {
+    font-size: 0.72rem;
+    color: var(--gray-600);
+    display: block;
+}
+
+.resumen-factura p {
+    font-size: 0.95rem;
+    font-weight: 700;
+    margin-top: 2px;
+}
+
+.detalle-calculo {
+    background: #fff8e1;
+    padding: 10px 14px;
+    border-radius: var(--radius-sm);
+    border: 1.5px solid #ffcc80;
+    font-size: 0.8rem;
+}
+
+.detalle-calculo p {
+    margin: 2px 0;
+}
+
+.detalle-calculo .destacado {
+    font-weight: 700;
+    color: var(--navy);
+}
+
+/* ========== BÚSQUEDA ========== */
+.busqueda-container {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.busqueda-container input {
+    flex: 1;
+    min-width: 180px;
+    padding: 10px 14px;
+    border: 1.5px solid var(--gray-200);
+    border-radius: var(--radius-sm);
+    font-size: 0.9rem;
+    font-family: inherit;
+    background: var(--gray-50);
+}
+
+.busqueda-container input:focus {
+    outline: none;
+    border-color: var(--navy-mid);
+    background: white;
+    box-shadow: 0 0 0 3px rgba(26, 58, 92, 0.1);
+}
+
+.badge-filtro {
+    background: #e8eaf6;
+    padding: 5px 12px;
+    border-radius: 16px;
+    font-size: 0.72rem;
+    color: var(--navy);
+    font-weight: 600;
+}
+
+.ayuda-busqueda {
+    font-size: 0.7rem;
+    color: var(--gray-600);
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    padding: 4px 0;
+}
+
+.ayuda-busqueda span {
+    background: var(--gray-100);
+    padding: 2px 8px;
+    border-radius: 10px;
+    font-weight: 500;
+}
+
+.sin-resultados {
+    text-align: center;
+    color: var(--gray-400);
+    padding: 24px;
+    font-size: 0.9rem;
+}
+
+/* ========== FACTURAS INTELIGENTES ========== */
+.inteligente-config {
+    background: linear-gradient(135deg, #e8f5e9, #c8e6c9);
+    border: 1.5px solid var(--green-mid);
+    border-radius: var(--radius);
+    padding: 16px;
+}
+
+.inteligente-config h3 {
+    color: var(--green);
+    font-size: 0.95rem;
+    margin-bottom: 12px;
+    font-weight: 700;
+}
+
+.inteligente-preview {
+    background: var(--gray-50);
+    border-radius: var(--radius-sm);
+    padding: 14px 16px;
+    margin-top: 12px;
+    border: 1.5px dashed var(--green-mid);
+}
+
+.inteligente-preview .numero-facturas {
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: var(--navy);
+}
+
+.inteligente-preview .monto-total {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--green-mid);
+}
+
+.detalle-facturas {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(72px, 1fr));
+    gap: 6px;
+    margin-top: 8px;
+}
+
+.detalle-facturas span {
+    background: white;
+    padding: 4px 8px;
+    border-radius: 6px;
+    text-align: center;
+    font-weight: 600;
+    font-size: 0.78rem;
+    border: 1px solid var(--gray-200);
+}
+
+.detalle-facturas span.factura-item {
+    background: var(--green-light);
+    border-color: #a5d6a7;
+}
+
+.resumen-orden {
+    background: #fff3e0;
+    padding: 12px 14px;
+    border-radius: var(--radius-sm);
+    border: 1.5px solid #ffcc80;
+    margin-top: 10px;
+    font-size: 0.84rem;
+}
+
+.resumen-orden p {
+    margin: 3px 0;
+}
+
+.badge-combustible {
+    display: inline-block;
+    padding: 3px 11px;
+    border-radius: 14px;
+    font-size: 0.72rem;
+    font-weight: 700;
+}
+
+.badge-combustible.superior {
+    background: #ffd54f;
+    color: #e65100;
+}
+
+.badge-combustible.regular {
+    background: #90caf9;
+    color: #0d47a1;
+}
+
+.badge-combustible.diesel {
+    background: #a5d6a7;
+    color: var(--green);
+}
+
+.sugerencia-box {
+    background: #e3f2fd;
+    border: 1.5px solid #90caf9;
+    border-radius: var(--radius-sm);
+    padding: 10px 14px;
+    font-size: 0.82rem;
+    color: #0d47a1;
+    margin-top: 8px;
+}
+
+/* ========== SELECTOR DE MES ========== */
+.selector-mes {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.selector-mes select {
+    padding: 8px 12px;
+    border: 1.5px solid var(--gray-200);
+    border-radius: var(--radius-sm);
+    font-size: 0.85rem;
+    font-family: inherit;
+    background: white;
+    color: var(--navy);
+    min-width: 140px;
+}
+
+/* ========== SEPARADOR ========== */
+.separador {
+    border: none;
+    border-top: 1.5px solid var(--gray-200);
+    margin: 6px 0;
+}
+
+/* ========== TEXTO UTILIDADES ========== */
+.text-center { text-align: center; }
+.text-muted { color: var(--gray-400); }
+.text-sm { font-size: 0.8rem; }
+
+/* ========== PANEL ADMIN ========== */
+.panel-administrador {
+    max-width: 560px;
+    margin: 0 auto;
+    width: 100%;
+}
+
+/* ========== SUPERUSER MODAL ========== */
+.modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(13, 27, 42, 0.65);
+    z-index: 100;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+.modal-overlay.activo {
+    display: flex;
+}
+
+.modal-box {
+    background: white;
+    border-radius: 16px;
+    padding: 24px;
+    max-width: 480px;
+    width: 100%;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.4);
+}
+
+.modal-box h2 {
+    font-size: 1.1rem;
+    color: var(--navy);
+    margin-bottom: 14px;
+    text-align: center;
+}
+
+/* ========== FRASE FISCAL ========== */
+.frase-fiscal {
+    background: #fff3e0;
+    padding: 8px 14px;
+    border-radius: var(--radius-sm);
+    border: 1.5px solid #ffcc80;
+    text-align: center;
+    font-size: 0.72rem;
+    font-weight: 600;
+    color: var(--orange);
+}
+
+/* ========== RESPONSIVE ========== */
+@media (max-width: 640px) {
+    .container {
+        padding: 18px 14px;
+        border-radius: 14px;
+    }
+
+    .grid-2,
+    .grid-3,
+    .grid-4 {
+        grid-template-columns: 1fr;
+    }
+
+    .menu-superior {
+        flex-direction: column;
+    }
+
+    .menu-superior .btn-cerrar-sesion {
+        width: 100%;
+    }
+
+    .logo-titulo h1 {
+        font-size: 1.2rem;
+    }
+
+    .resumen-factura {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .busqueda-container {
+        flex-direction: column;
+    }
+
+    .busqueda-container input {
+        width: 100%;
+        min-width: unset;
+    }
+
+    .menu-principal {
+        max-width: 100%;
+    }
+
+    .formulario-login {
+        max-width: 100%;
+    }
+
+    .panel-administrador {
+        max-width: 100%;
+    }
+
+    .detalle-facturas {
+        grid-template-columns: repeat(auto-fill, minmax(60px, 1fr));
+    }
+}

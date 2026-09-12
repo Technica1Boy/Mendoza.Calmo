@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SAFgt · Facturación</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<div class="container" id="app">
+
+    <!-- Botón Superuser (esquina) -->
+    <button class="btn-superuser" onclick="abrirSuperuser()">SU</button>
+
+    <!-- Logo y título -->
+    <div class="logo-titulo">
+        <img src="SX/Logo.png" alt="SAFgt" onerror="this.style.display='none'">
+        <h1>SAFgt</h1>
+        <span class="subtitulo">Facturación Automatizada</span>
+    </div>
+
+    <!-- ========== MENÚ PRINCIPAL ========== -->
+    <div id="menuPrincipal" class="menu-principal">
+        <button class="btn-menu btn-usuario" onclick="mostrarLoginUsuario()">Usuario</button>
+        <button class="btn-menu btn-auditor" onclick="mostrarLoginAuditor()">Auditor / Contador</button>
+    </div>
+
+    <!-- ========== LOGIN USUARIO ========== -->
+    <div id="formLoginUsuario" class="formulario formulario-login">
+        <h2>Inicio de Sesión</h2>
+        <p class="descripcion">Selecciona tu NIT e ingresa tu contraseña</p>
+
+        <div class="form-group">
+            <label>NIT</label>
+            <select id="nitLogin">
+                <option value="">-- Selecciona tu NIT --</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label>Contraseña</label>
+            <input type="password" id="passLogin" placeholder="Contraseña">
+        </div>
+
+        <div id="mensajeErrorLogin" class="mensaje-error"></div>
+
+        <button class="btn-ingresar" onclick="loginUsuario()">Ingresar</button>
+        <button class="btn-volver" onclick="volverMenu()">Volver</button>
+    </div>
+
+    <!-- ========== LOGIN AUDITOR ========== -->
+    <div id="formLoginAuditor" class="formulario formulario-login">
+        <h2>Auditor / Contador</h2>
+        <p class="descripcion">Acceso exclusivo para administradores</p>
+
+        <div class="form-group">
+            <label>Usuario</label>
+            <select id="adminLoginSelect">
+                <option value="">-- Selecciona administrador --</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label>Contraseña</label>
+            <input type="password" id="passAuditor" placeholder="Contraseña">
+        </div>
+
+        <div id="mensajeErrorAuditor" class="mensaje-error"></div>
+
+        <button class="btn-ingresar" onclick="loginAuditor()" style="background:linear-gradient(135deg,#2e7d32,#1b5e20);">Ingresar</button>
+        <button class="btn-volver" onclick="volverMenu()">Volver</button>
+    </div>
+
+    <!-- ========== PANEL ADMINISTRADOR ========== -->
+    <div id="panelAuditor" class="formulario panel-administrador">
+        <h2>Administración</h2>
+        <p class="descripcion">Registro de Contribuyentes</p>
+
+        <div class="usuario-info" id="adminConectadoInfo">Conectado</div>
+
+        <hr class="separador">
+
+        <h3 style="color:var(--navy); font-size:0.95rem;">Registrar Contribuyente</h3>
+
+        <div class="form-group">
+            <label>NIT</label>
+            <input type="text" id="nitRegistro" placeholder="Ej: 123456-7">
+        </div>
+        <div class="form-group">
+            <label>Nombre del Contribuyente</label>
+            <input type="text" id="nombreRegistro" placeholder="Nombre completo">
+        </div>
+        <div class="form-group">
+            <label>Empresa / Negocio</label>
+            <input type="text" id="empresaRegistro" placeholder="Nombre de la empresa">
+        </div>
+        <div class="form-group">
+            <label>Dirección</label>
+            <input type="text" id="direccionRegistro" placeholder="Dirección">
+        </div>
+        <div class="form-group">
+            <label>Contraseña</label>
+            <input type="password" id="passRegistro" placeholder="********">
+        </div>
+
+        <div id="mensajeRegistro" class="mensaje-exito"></div>
+        <div id="mensajeErrorRegistro" class="mensaje-error"></div>
+
+        <button class="btn-registrar" onclick="registrarContribuyente()">Registrar</button>
+
+        <hr class="separador">
+
+        <h3 style="color:var(--navy); font-size:0.95rem;">Contribuyentes Registrados</h3>
+        <div id="listaUsuarios" class="lista-usuarios">
+            <div class="sin-usuarios">No hay contribuyentes registrados</div>
+        </div>
+
+        <hr class="separador">
+        <button class="btn-volver" onclick="cerrarSesionAuditor()">Cerrar sesión</button>
+    </div>
+
+    <!-- ========== PANEL USUARIO ========== -->
+    <div id="panelUsuario" class="formulario">
+
+        <!-- Menú Superior -->
+        <div id="menuSuperior" class="menu-superior activo">
+            <button class="btn-menu-opcion activo" onclick="cambiarPanel('contribuyentes')" id="btnContribuyentes">Contribuyente</button>
+            <button class="btn-menu-opcion" onclick="cambiarPanel('facturas')" id="btnFacturas">Facturas</button>
+            <button class="btn-menu-opcion" onclick="cambiarPanel('facturasInteligentes')" id="btnFacturasInteligentes">Inteligentes</button>
+            <button class="btn-menu-opcion" onclick="cambiarPanel('precios')" id="btnPrecios">Precios</button>
+            <button class="btn-menu-opcion" onclick="cambiarPanel('busqueda')" id="btnBusqueda">Búsqueda</button>
+            <button class="btn-menu-opcion" onclick="cambiarPanel('anuladas')" id="btnAnuladas">Anuladas</button>
+            <button class="btn-cerrar-sesion" onclick="cerrarSesionUsuario()">Salir</button>
+        </div>
+
+        <!-- PANEL: CONTRIBUYENTE -->
+        <div id="panelContribuyentes" class="panel activo">
+            <h2>Contribuyente</h2>
+
+            <div id="infoContribuyenteUsuario" class="card-info">
+                <p><strong>NIT:</strong> <span id="userNit">-</span></p>
+                <p><strong>Nombre:</strong> <span id="userNombre">-</span></p>
+                <p><strong>Empresa:</strong> <span id="userEmpresa">-</span></p>
+                <p><strong>Dirección:</strong> <span id="userDireccion">-</span></p>
+            </div>
+
+            <div class="card-info">
+                <div class="selector-mes">
+                    <label style="font-weight:600; color:var(--navy); font-size:0.85rem;">Mes:</label>
+                    <select id="selectMes" onchange="actualizarStatsMes()">
+                        <option value="todos">Todos los meses</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="grid-2">
+                <div class="card-info">
+                    <p><strong>Facturas:</strong> <span id="userTotalFacturas">0</span></p>
+                    <p><strong>Monto total:</strong> <span id="userMontoTotal">Q 0.00</span></p>
+                </div>
+                <div class="card-info">
+                    <p><strong>Facturas del período:</strong> <span id="userFacturasPeriodo">0</span></p>
+                    <p><strong>Monto del período:</strong> <span id="userMontoPeriodo">Q 0.00</span></p>
+                </div>
+            </div>
+        </div>
+
+        <!-- PANEL: FACTURAS -->
+        <div id="panelFacturas" class="panel">
+            <h2>Factura de Combustible</h2>
+            <p class="descripcion">Documento Tributario Electrónico</p>
+
+            <div class="card-info card-navy">
+                <div class="grid-2">
+                    <div>
+                        <p><strong>Emisor:</strong> <span id="facturaEmisor">-</span></p>
+                        <p><strong>NIT:</strong> <span id="facturaNitEmisor">-</span></p>
+                    </div>
+                    <div>
+                        <p><strong>Establecimiento:</strong> <span id="facturaEstablecimiento">-</span></p>
+                        <p><strong>Dirección:</strong> <span id="facturaDireccion">-</span></p>
+                    </div>
+                </div>
+            </div>
+
+            <hr class="separador">
+
+            <div class="card-info">
+                <h3 style="color:var(--navy); font-size:0.92rem; margin-bottom:10px;">Datos del Documento</h3>
+
+                <div class="grid-2">
+                    <div class="form-group">
+                        <label>NIT del Comprador</label>
+                        <div style="display:flex; gap:6px;">
+                            <input type="text" id="nitComprador" placeholder="Ej: 123456-7" style="flex:1;" oninput="buscarComprador()">
+                            <button class="btn-ingresar btn-sm" onclick="buscarComprador()">Buscar</button>
+                        </div>
+                        <div id="sugerenciasNIT" style="display:none; background:white; border:1.5px solid var(--navy-mid); border-radius:8px; max-height:110px; overflow-y:auto; margin-top:4px; position:relative; z-index:10;"></div>
+                    </div>
+                    <div class="form-group">
+                        <label>Nombre del Comprador</label>
+                        <input type="text" id="nombreComprador" placeholder="Nombre completo">
+                    </div>
+                </div>
+
+                <div class="grid-2" style="margin-top:8px;">
+                    <div class="form-group">
+                        <label>Dirección del Comprador</label>
+                        <input type="text" id="direccionComprador" placeholder="Dirección">
+                    </div>
+                    <div class="form-group">
+                        <label>Tipo de Documento</label>
+                        <select id="tipoDocumento" onchange="cambiarTipoDocumento()">
+                            <option value="CF" selected>C/F (Consumidor Final)</option>
+                            <option value="NIT">NIT</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <hr class="separador">
+
+            <div class="card-info">
+                <h3 style="color:var(--navy); font-size:0.92rem; margin-bottom:10px;">Datos de la Factura</h3>
+                <div class="grid-3">
+                    <div class="form-group">
+                        <label>Serie</label>
+                        <input type="text" id="facturaSerie" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label>Número</label>
+                        <input type="text" id="facturaNumero" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label>Fecha</label>
+                        <input type="text" id="facturaFecha" readonly>
+                    </div>
+                </div>
+            </div>
+
+            <hr class="separador">
+
+            <div class="card-info">
+                <h3 style="color:var(--navy); font-size:0.92rem; margin-bottom:10px;">Productos</h3>
+
+                <div class="grid-3" style="margin-bottom:10px;">
+                    <div class="form-group">
+                        <label>Tipo de Combustible</label>
+                        <select id="tipoCombustibleFactura" onchange="calcularFactura(); actualizarSerie();">
+                            <option value="superior">Gasolina Superior</option>
+                            <option value="regular">Gasolina Regular</option>
+                            <option value="diesel">Diésel</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Total a Pagar (Q)</label>
+                        <input type="number" id="montoFactura" placeholder="Ej: 100.00" step="0.01" oninput="calcularFactura()">
+                        <small>Monto que paga el cliente</small>
+                    </div>
+                    <div class="form-group">
+                        <label>Galones</label>
+                        <input type="text" id="galonesFactura" readonly>
+                    </div>
+                </div>
+
+                <div class="detalle-calculo">
+                    <p><strong>Desglose:</strong></p>
+                    <p>Total pagado: <span class="destacado" id="detalleTotalPago">Q 0.00</span></p>
+                    <p>IDP (<span id="detalleIDPValor">Q 0.00</span>)</p>
+                    <p>IVA 12% (<span id="detalleIVAValor">Q 0.00</span>)</p>
+                    <p><strong>Subtotal:</strong> <span class="destacado" id="detalleSubtotal">Q 0.00</span></p>
+                    <p><strong>Galones:</strong> <span class="destacado" id="detalleGalones">0.0000</span></p>
+                </div>
+
+                <div class="resumen-factura" style="margin-top:10px;">
+                    <div>
+                        <strong>Subtotal</strong>
+                        <p style="color:var(--navy);" id="resumenSubtotal">Q 0.00</p>
+                    </div>
+                    <div>
+                        <strong>IDP</strong>
+                        <p style="color:var(--green-mid);" id="resumenIDP">Q 0.00</p>
+                    </div>
+                    <div>
+                        <strong>IVA 12%</strong>
+                        <p style="color:var(--orange);" id="resumenIVA">Q 0.00</p>
+                    </div>
+                    <div>
+                        <strong>Total</strong>
+                        <p style="color:var(--navy); font-size:1.1rem;" id="resumenTotal">Q 0.00</p>
+                    </div>
+                    <div>
+                        <strong>Galones</strong>
+                        <p style="color:var(--green-mid);" id="resumenGalones">0.0000</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="frase-fiscal">Sujeto a retención definitiva ISR / Sujeto a pagos trimestrales ISR</div>
+
+            <div class="grid-2">
+                <button class="btn-success" onclick="generarFactura()">Generar Factura</button>
+                <button class="btn-ingresar" onclick="limpiarFactura()">Limpiar</button>
+            </div>
+
+            <hr class="separador">
+
+            <div class="card-info">
+                <h3 style="color:var(--navy); font-size:0.92rem; margin-bottom:8px;">Mis Facturas</h3>
+                <div class="scroll-container" style="max-height:240px;">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Serie</th>
+                                <th>Fecha</th>
+                                <th>Total</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tablaFacturasBody">
+                            <tr><td colspan="5" class="text-center text-muted" style="padding:14px;">No hay facturas</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- PANEL: FACTURAS INTELIGENTES -->
+        <div id="panelFacturasInteligentes" class="panel">
+            <h2>Facturas Inteligentes</h2>
+            <p class="descripcion">Genera múltiples facturas con montos variables (múltiplos de Q5)</p>
+
+            <div class="card-info card-green">
+                <div class="grid-2">
+                    <div>
+                        <p><strong>Emisor:</strong> <span id="inteligenteEmisor">-</span></p>
+                        <p><strong>NIT:</strong> <span id="inteligenteNitEmisor">-</span></p>
+                    </div>
+                    <div>
+                        <p><strong>Establecimiento:</strong> <span id="inteligenteEstablecimiento">-</span></p>
+                        <p><strong>Dirección:</strong> <span id="inteligenteDireccion">-</span></p>
+                    </div>
+                </div>
+            </div>
+
+            <hr class="separador">
+
+            <div class="inteligente-config">
+                <h3>Configuración de la Orden</h3>
+
+                <div class="grid-3">
+                    <div class="form-group">
+                        <label>Tipo de Combustible</label>
+                        <select id="inteligenteCombustible">
+                            <option value="superior">Gasolina Superior</option>
+                            <option value="regular">Gasolina Regular</option>
+                            <option value="diesel">Diésel</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Monto Total (Q)</label>
+                        <input type="number" id="inteligenteMontoTotal" placeholder="Ej: 1000" step="5" oninput="sugerirCantidad()">
+                        <small>Múltiplo de Q5</small>
+                    </div>
+                    <div class="form-group">
+                        <label>Cantidad de Facturas</label>
+                        <input type="number" id="inteligenteCantidad" placeholder="Ej: 8" min="1" step="1">
+                    </div>
+                </div>
+
+                <div class="grid-2" style="margin-top:8px;">
+                    <div class="form-group">
+                        <label>Monto Mínimo (Q)</label>
+                        <input type="number" id="inteligenteMinimo" placeholder="50" step="5" value="50">
+                        <small>Múltiplo de Q5</small>
+                    </div>
+                    <div class="form-group">
+                        <label>Monto Máximo (Q)</label>
+                        <input type="number" id="inteligenteMaximo" placeholder="500" step="5" value="500">
+                        <small>Múltiplo de Q5</small>
+                    </div>
+                </div>
+
+                <div style="margin-top:8px;">
+                    <label style="font-weight:600; color:var(--navy); font-size:0.82rem; display:block; margin-bottom:4px;">Comprador</label>
+                    <div class="grid-2">
+                        <input type="text" id="inteligenteComprador" value="Consumidor Final" readonly style="background:var(--gray-100); padding:8px 12px; border:1.5px solid var(--gray-200); border-radius:8px; font-size:0.85rem;">
+                        <input type="text" id="inteligenteNitComprador" value="C/F" readonly style="background:var(--gray-100); padding:8px 12px; border:1.5px solid var(--gray-200); border-radius:8px; font-size:0.85rem;">
+                    </div>
+                    <small style="font-size:0.68rem; color:var(--gray-400);">Siempre Consumidor Final</small>
+                </div>
+
+                <div id="sugerenciaCantidad" class="sugerencia-box" style="display:none;"></div>
+
+                <div class="grid-2" style="margin-top:12px;">
+                    <button class="btn-calcular" onclick="previsualizarOrden()">Calcular</button>
+                    <button class="btn-generar-orden" id="btnGenerarOrden" onclick="generarOrdenInteligente()" disabled>Generar</button>
+                </div>
+            </div>
+
+            <div id="inteligentePreview" class="inteligente-preview" style="display:none;">
+                <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
+                    <div>
+                        <span style="font-size:0.78rem; color:var(--gray-600);">Facturas</span>
+                        <div class="numero-facturas" id="previewCantidad">0</div>
+                    </div>
+                    <div>
+                        <span style="font-size:0.78rem; color:var(--gray-600);">Monto total</span>
+                        <div class="monto-total" id="previewMontoTotal">Q 0.00</div>
+                    </div>
+                    <div>
+                        <span style="font-size:0.78rem; color:var(--gray-600);">Combustible</span>
+                        <div><span class="badge-combustible superior" id="previewCombustible">Superior</span></div>
+                    </div>
+                </div>
+                <hr style="border:none; border-top:1px solid var(--gray-200); margin:10px 0;">
+                <div style="font-size:0.8rem; color:var(--gray-600); margin-bottom:6px;">Desglose (montos variables múltiplos de Q5):</div>
+                <div class="detalle-facturas" id="previewDetalle"></div>
+                <div class="resumen-orden">
+                    <p><strong>Resumen:</strong></p>
+                    <p>Se generarán <strong id="resumenCantidad">0</strong> facturas por un total de <strong id="resumenTotal">Q 0.00</strong></p>
+                    <p>Tipo: <span id="resumenCombustible">-</span> · Rango: <span id="resumenRango">-</span></p>
+                    <p>Comprador: Consumidor Final (C/F)</p>
+                    <p>Lote: <span id="resumenLote">-</span></p>
+                </div>
+            </div>
+
+            <hr class="separador">
+
+            <div class="card-info">
+                <h3 style="color:var(--navy); font-size:0.92rem; margin-bottom:8px;">Órdenes Generadas</h3>
+                <div class="scroll-container" style="max-height:220px;">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Lote</th>
+                                <th>Fecha</th>
+                                <th>Facturas</th>
+                                <th>Total</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tablaOrdenesBody">
+                            <tr><td colspan="6" class="text-center text-muted" style="padding:14px;">No hay órdenes</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- PANEL: PRECIOS (sin cambios de funcionalidad) -->
+        <div id="panelPrecios" class="panel">
+            <h2>Configuración de Precios</h2>
+            <p class="descripcion">Ingresa el precio de venta por galón para cada tipo de combustible</p>
+
+            <hr class="separador">
+
+            <div class="card-info card-orange">
+                <h3 style="color:var(--orange); font-size:0.92rem; margin-bottom:12px;">Precio por Galón</h3>
+
+                <div style="display:flex; align-items:center; gap:8px; margin-bottom:10px; flex-wrap:wrap;">
+                    <label style="font-weight:600; font-size:0.85rem; color:var(--navy); min-width:130px;">Gasolina Superior</label>
+                    <input type="number" id="precioSuperior" placeholder="Precio Q" step="0.01" style="width:100px; padding:6px 10px; border:1.5px solid var(--gray-200); border-radius:6px; font-size:0.85rem;">
+                    <label style="font-weight:500; font-size:0.8rem; color:var(--navy); display:flex; align-items:center; gap:4px;">
+                        <input type="checkbox" id="etanolSuperior" checked> E10
+                    </label>
+                    <span style="font-weight:600; color:var(--green-mid); font-size:0.8rem;" id="idpMostrarSuperior">IDP: Q4.23</span>
+                </div>
+
+                <div style="display:flex; align-items:center; gap:8px; margin-bottom:10px; flex-wrap:wrap;">
+                    <label style="font-weight:600; font-size:0.85rem; color:var(--navy); min-width:130px;">Gasolina Regular</label>
+                    <input type="number" id="precioRegular" placeholder="Precio Q" step="0.01" style="width:100px; padding:6px 10px; border:1.5px solid var(--gray-200); border-radius:6px; font-size:0.85rem;">
+                    <label style="font-weight:500; font-size:0.8rem; color:var(--navy); display:flex; align-items:center; gap:4px;">
+                        <input type="checkbox" id="etanolRegular" checked> E10
+                    </label>
+                    <span style="font-weight:600; color:var(--green-mid); font-size:0.8rem;" id="idpMostrarRegular">IDP: Q4.14</span>
+                </div>
+
+                <div style="display:flex; align-items:center; gap:8px; margin-bottom:10px; flex-wrap:wrap;">
+                    <label style="font-weight:600; font-size:0.85rem; color:var(--navy); min-width:130px;">Diésel</label>
+                    <input type="number" id="precioDiesel" placeholder="Precio Q" step="0.01" style="width:100px; padding:6px 10px; border:1.5px solid var(--gray-200); border-radius:6px; font-size:0.85rem;">
+                    <span style="font-weight:600; color:var(--green-mid); font-size:0.8rem;">IDP: Q1.30</span>
+                    <span style="background:var(--gray-200); padding:2px 8px; border-radius:10px; font-size:0.68rem; color:var(--gray-600);">Sin Etanol</span>
+                </div>
+
+                <button class="btn-ingresar" onclick="guardarConfiguracionCombustible()" style="margin-top:8px; background:linear-gradient(135deg,#e65100,#bf360c);">Guardar Precios</button>
+            </div>
+
+            <hr class="separador">
+
+            <div class="card-info card-green">
+                <h3 style="color:var(--navy); font-size:0.92rem; margin-bottom:8px;">Precios Actuales</h3>
+                <div id="preciosActuales" style="font-size:0.85rem; color:var(--gray-800); display:grid; grid-template-columns:1fr 1fr; gap:4px;">
+                    <p><strong>Superior:</strong> <span id="precioActualSuperior">-</span> | IDP: <span id="idpActualSuperior">-</span></p>
+                    <p><strong>Regular:</strong> <span id="precioActualRegular">-</span> | IDP: <span id="idpActualRegular">-</span></p>
+                    <p><strong>Diésel:</strong> <span id="precioActualDiesel">-</span> | IDP: Q1.30</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- PANEL: BÚSQUEDA -->
+        <div id="panelBusqueda" class="panel">
+            <h2>Búsqueda de Facturas</h2>
+            <p class="descripcion">Busca por nombre, NIT, fecha, serie, monto o lote</p>
+
+            <div class="card-info">
+                <div class="busqueda-container">
+                    <input type="text" id="busquedaFactura" placeholder="Buscar por nombre, NIT, fecha, serie, monto o lote..." oninput="filtrarFacturasBusqueda()">
+                    <span class="badge-filtro" id="contadorBusqueda">0 facturas</span>
+                    <button class="btn-ingresar btn-sm" onclick="limpiarBusqueda()">Limpiar</button>
+                </div>
+                <div class="ayuda-busqueda">
+                    <span>Nombre</span>
+                    <span>NIT</span>
+                    <span>Fecha</span>
+                    <span>Serie</span>
+                    <span>Monto</span>
+                    <span>Lote</span>
+                </div>
+            </div>
+
+            <div class="card-info">
+                <h3 style="color:var(--navy); font-size:0.92rem; margin-bottom:8px;">Facturas Emitidas</h3>
+                <div class="scroll-container" style="max-height:360px;">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Serie</th>
+                                <th>Fecha</th>
+                                <th>Comprador</th>
+                                <th>NIT</th>
+                                <th>Total</th>
+                                <th>Lote</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tablaBusquedaBody">
+                            <tr><td colspan="7" class="text-center text-muted" style="padding:14px;">No hay facturas</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div id="sinResultadosBusqueda" style="display:none;" class="sin-resultados">No se encontraron coincidencias</div>
+            </div>
+        </div>
+
+        <!-- PANEL: ANULADAS / ELIMINADAS -->
+        <div id="panelAnuladas" class="panel">
+            <h2>Anuladas / Eliminadas</h2>
+            <p class="descripcion">Facturas anuladas o eliminadas del sistema</p>
+
+            <div class="card-info">
+                <div class="scroll-container" style="max-height:400px;">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Serie</th>
+                                <th>Fecha</th>
+                                <th>Comprador</th>
+                                <th>Total</th>
+                                <th>Estado</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tablaAnuladasBody">
+                            <tr><td colspan="6" class="text-center text-muted" style="padding:14px;">No hay facturas anuladas</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!-- ========== MODAL SUPERUSER ========== -->
+<div id="modalSuperuser" class="modal-overlay">
+    <div class="modal-box">
+        <h2>Superuser</h2>
+        <div id="superuserLogin">
+            <div class="form-group">
+                <label>Contraseña</label>
+                <input type="password" id="passSuperuser" placeholder="Superuser">
+            </div>
+            <div id="mensajeErrorSuperuser" class="mensaje-error"></div>
+            <button class="btn-ingresar" onclick="loginSuperuser()">Acceder</button>
+            <button class="btn-volver" onclick="cerrarModalSuperuser()" style="margin-top:8px;">Cerrar</button>
+        </div>
+
+        <div id="superuserPanel" style="display:none;">
+            <p class="text-center text-sm text-muted" style="margin-bottom:12px;">Gestión de administradores</p>
+
+            <h3 style="color:var(--navy); font-size:0.9rem; margin-bottom:8px;">Administradores actuales</h3>
+            <div id="listaAdmins" class="lista-usuarios" style="margin-bottom:14px;"></div>
+
+            <h3 style="color:var(--navy); font-size:0.9rem; margin-bottom:8px;">Agregar administrador</h3>
+            <div class="form-group">
+                <label>Nombre</label>
+                <input type="text" id="nuevoAdminNombre" placeholder="Nombre completo">
+            </div>
+            <div class="form-group">
+                <label>Contraseña</label>
+                <input type="password" id="nuevoAdminPass" placeholder="Contraseña">
+            </div>
+            <div id="mensajeSuperuser" class="mensaje-exito"></div>
+            <div id="mensajeErrorSuperuser2" class="mensaje-error"></div>
+            <button class="btn-registrar" onclick="agregarAdmin()">Agregar</button>
+            <button class="btn-volver" onclick="cerrarModalSuperuser()" style="margin-top:8px;">Cerrar</button>
+        </div>
+    </div>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>
